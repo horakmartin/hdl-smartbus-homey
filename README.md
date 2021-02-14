@@ -16,6 +16,7 @@ If devices are not discovered, no traffic is published on the bus for that devic
 - Dimmers (this also includes DMX and DALI)
 - Multisensors (x-in-1 etc.)
 - Temperature sensors
+- Floor Heating Controllers
 
 If you want more equipment to be supported. Create an issue or contribute by creating the code yourself.
 
