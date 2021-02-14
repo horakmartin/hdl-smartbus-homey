@@ -6,6 +6,7 @@ const HdlDimmers = require("./hdl/hdl_dimmers");
 const HdlRelays = require("./hdl/hdl_relays");
 const HdlMultisensors = require("./hdl/hdl_multisensors");
 const HdlTempsensors = require("./hdl/hdl_tempsensors");
+const HdlFloorheaters = require("./hdl/hdl_floorheaters");
 
 class HDLSmartBus extends Homey.App {
   onInit() {
@@ -118,7 +119,8 @@ class HDLSmartBus extends Homey.App {
       "relay",
       "tempsensor",
       "multisensor",
-      "universal-switch"
+      "universal-switch",
+      "floor-heaters"
     ];
 
     for (let i = 0; i < drivers.length; i++) {
@@ -162,6 +164,10 @@ class HDLSmartBus extends Homey.App {
     return this._tempsensors;
   }
 
+  getFloorheaters() {
+    return this._floorheaters;
+  }
+
   _signalReceived(signal) {
     // Check to see that the subnet is the same
     if (
@@ -181,6 +187,7 @@ class HDLSmartBus extends Homey.App {
     let hdlRelays = new HdlRelays(senderType);
     let hdlMultisensors = new HdlMultisensors(senderType);
     let hdlTempsensors = new HdlTempsensors(senderType);
+    let hdlFloorheaters = new HdlFloorheaters(senderType);
     if (hdlDimmers.isOne()) {
       // DIMMERS
       this._dimmers[signal.sender.id] = signal.sender;
@@ -197,6 +204,10 @@ class HDLSmartBus extends Homey.App {
       // TEMPSENSORS
       this._tempsensors[signal.sender.id] = signal.sender;
       Homey.ManagerDrivers.getDriver("tempsensor").updateValues(signal);
+    } else if (hdlFloorheaters.isOne()) {
+      // FLOORHEATERS
+      this._floorheaters[signal.sender.id] = signal.sender;
+      Homey.ManagerDrivers.getDriver("floorheater").updateValues(signal);
     }
   }
 }
